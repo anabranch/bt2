@@ -40,7 +40,7 @@ if __name__ == "__main__":
         env = "ci"
         session_name = env + "-basic"
         anyscale\
-            .app_config("prod:8")\
+            .app_config("prod:12")\
             .session(session_name=session_name)\
             .connect()
         num_runs = 500

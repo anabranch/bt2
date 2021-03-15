@@ -50,12 +50,19 @@ if __name__ == "__main__":
     training_iter = 50
     n_samples = 30
 
-    ray.init()
-    # import anyscale
-    # anyscale\
-    #     .require("./requirements.txt")\
-    #     .session(session_name="bill_tune_training")\
-    #     .connect()
+    # the following line run from anyscale project
+    # this does not appear to work with incoming connections on anysacle, just like locally
+    #ray.init()
+    # the following runs on an existing ray on laptop
+    # it also has worked when running pushed code to the anyscale session
+    ray.init(address='auto', _redis_password='5241590000000000')
+    # the following is for anyscale connect verification
+    # issues with current nightly are preventing its working atm
+    #import anyscale
+    #anyscale\
+         #.require("./requirements.txt")\
+         #.session(session_name="new-sbox")\
+         #.connect()
     print("Starting Training")
 
     trainable_cls = DistributedTrainableCreator(train_mnist, num_workers=2)

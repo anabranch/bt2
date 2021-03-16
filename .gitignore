@@ -1,3 +1,8 @@
 wandb/*
 .DS_Store
 .anyscale.yaml
+wandb
+old
+.vscode/*
+__pycache__/*
+.ipynb_checkpoints/*

@@ -3,4 +3,3 @@ wandb
 numpy
 tensorboardX
 torchvision==0.9
-torch

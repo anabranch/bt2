@@ -1,0 +1,74 @@
+auth:
+  ssh_user: ubuntu
+available_node_types:
+  anyscale.cpu.large:
+    docker:
+      worker_image: anyscale/ray-ml@sha256:8fff399e01e092a01250035e259f46d5e7e3624245596d12cf182ee887d0b8b3
+    max_workers: 10
+    node_config:
+      InstanceType: m5.16xlarge
+    resources: {}
+  anyscale.cpu.medium:
+    docker:
+      worker_image: anyscale/ray-ml@sha256:8fff399e01e092a01250035e259f46d5e7e3624245596d12cf182ee887d0b8b3
+    max_workers: 20
+    node_config:
+      InstanceType: m5.4xlarge
+    resources: {}
+  anyscale.gpu.large:
+    docker:
+      worker_image: anyscale/ray-ml@sha256:51f9971ead62fdfd11549ead09996fa2d2a985f23473841f5cbe9aad4ac23296
+    max_workers: 10
+    node_config:
+      InstanceType: g3.16xlarge
+    resources: {}
+  anyscale.gpu.medium:
+    docker:
+      worker_image: anyscale/ray-ml@sha256:51f9971ead62fdfd11549ead09996fa2d2a985f23473841f5cbe9aad4ac23296
+    max_workers: 20
+    node_config:
+      InstanceType: g3.4xlarge
+    resources: {}
+cluster_name: default
+cluster_synced_files: []
+docker:
+  container_name: ray_container
+  image: anyscale/ray-ml@sha256:8fff399e01e092a01250035e259f46d5e7e3624245596d12cf182ee887d0b8b3
+  pull_before_run: false
+file_mounts: {}
+file_mounts_sync_continuously: false
+head_node: {}
+head_node_type: anyscale.cpu.medium
+head_setup_commands: []
+head_start_ray_commands:
+- ray stop
+- ulimit -n 65536; cd ~/basic-project; AUTOSCALER_UPDATE_INTERVAL_S=5 ray start --head
+  --port=6379 --object-manager-port=8076 --gcs-server-port=9031 --ray-client-server-port=10001
+  --autoscaling-config=~/ray_bootstrap_config.yaml
+idle_timeout_minutes: 5
+initialization_commands: []
+max_workers: 50
+provider:
+  availability_zone: us-west-2a
+  region: us-west-2
+  type: aws
+rsync_exclude:
+- '**/.git'
+- '**/.git/**'
+rsync_filter:
+- .gitignore
+setup_commands:
+- 'echo "pandas
+
+  wandb
+
+  numpy
+
+  tensorboardX
+
+  torchvision==0.9" | pip install -r /dev/stdin'
+upscaling_speed: 1.0
+worker_nodes: {}
+worker_setup_commands: []
+worker_start_ray_commands:
+- ray stop --force; ulimit -n 65536; ray start --address=$RAY_HEAD_IP:6379 --object-manager-port=8076

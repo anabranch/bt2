@@ -35,15 +35,6 @@ if __name__ == "__main__":
         ray.init()
         num_runs = 10
         print("Running Locally")
-    elif "ci" in sys.argv:
-        print("Running on CI in Anyscale")
-        env = "ci"
-        session_name = env + "-basic"
-        anyscale\
-            .app_config("prod:12")\
-            .session(session_name=session_name)\
-            .connect()
-        num_runs = 500
     else:
         print("running on Anyscale")
         env = "dev"
